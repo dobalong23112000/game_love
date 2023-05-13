@@ -1,0 +1,173 @@
+.wrapper {
+  height: var(--window-height);
+}
+.logo {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+}
+.icon-footer {
+  z-index: 100;
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+}
+.background1 {
+  width: 100%;
+  height: calc(var(--window-height) / 2);
+  background-image: url("../../assets/images/game_background1.png");
+  animation: active-background1 0.4s ease-out;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  transform: scale(1, 2);
+}
+@keyframes active-background1 {
+  from {
+    background-image: url("../../assets/images/game_background1.png");
+  }
+  to {
+    height: calc(var(--window-height) / 2);
+    transform: scale(1,1);
+  }
+}
+.background2 {
+  width: 100%;
+  height: calc(var(--window-height) / 2);
+  background-image: url("../../assets/images/game_background2.png");
+  animation: active-background2 0.4s ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  bottom: 0;
+  transform: scale(1, 2);
+}
+@keyframes active-background2 {
+  from {
+    background-image: url("../../assets/images/game_background2.png");
+  }
+  to {
+    height: calc(var(--window-height) / 2);
+    transform: scale(1,1);
+  }
+}
+// icon add
+.active-circle-add {
+  transform: rotate(0deg);
+  animation: active-add 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+.nonactive-circle-add {
+  transform: rotate(0deg);
+  animation: non-active-add 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes active-add {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(45deg);
+  }
+}
+@keyframes non-active-add {
+  from {
+    transform: rotate(45deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+// icon reload
+.active-circle-reload {
+  transform: translateX(0px);
+  animation: active-reload 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+.nonactive-circle-reload {
+  transform: translateX(-58px);
+  animation: non-active-reload 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes active-reload {
+  from {
+    transform: translateX(-58px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+@keyframes non-active-reload {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(-58px);
+    z-index: -1;
+  }
+}
+// icon home
+.active-circle-home {
+  transform: translateX(0px);
+  animation: active-home 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+.nonactive-circle-home {
+  transform: translateX(-110px);
+  animation: non-active-home 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes active-home {
+  from {
+    transform: translateX(-110px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+@keyframes non-active-home {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(-110px);
+    z-index: -1;
+  }
+}
+// icon menu
+.active-circle-menu {
+  transform: translateX(0px);
+  animation: active-menu 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+.nonactive-circle-menu {
+  transform: translateX(-165px);
+  animation: non-active-menu 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes active-menu {
+  from {
+    transform: translateX(-165px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+@keyframes non-active-menu {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(-165px);
+    z-index: -1;
+  }
+}

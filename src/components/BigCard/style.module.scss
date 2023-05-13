@@ -1,0 +1,56 @@
+.wrapper {
+    width: 245px;
+    height: 250px;
+    background: rgba(197, 171, 255, 0.5);
+    box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+  
+}
+
+.content {
+    color: rgba(87, 71, 188, 1);
+    font-size: 10px;
+    line-height: 13px;
+    background-image: url('../../assets/images/background_card1.png');
+    height: 180px;
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    mix-blend-mode: luminosity;
+    -webkit-mix-blend-mode: luminosity;
+}
+
+.header {
+    height: 70px;
+    padding-left: 22px;
+    padding-top: 23px;
+    font-size: 9px;
+    line-height: 11px;
+    color: white;
+    font-family: 'Montserrat';
+    backdrop-filter: blur(15px);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.header-text {}
+
+.content-wrap-text {
+    margin-top: 11px;
+    font-size: 11px;
+    line-height: 14px;
+    font-family: 'Montserrat';
+    color: rgba(87, 71, 188, 1);
+    width: 218px;
+    height: 105px;
+    background: rgba(204, 195, 255, 1);
+    filter: blur(20px);
+    border-radius: 50%;
+}
+
+.content-text {
+    position: absolute;
+    width: 173px;
+    text-align: center;
+    top: 48px;
+}
