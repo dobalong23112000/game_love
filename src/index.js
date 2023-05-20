@@ -8,13 +8,15 @@ import AuthContextProvider from "contexts/AuthContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Suspense fallback={null}>
-      <GlobalStyles>
-      <AuthContextProvider>
-        <App />
-        </AuthContextProvider>
-      </GlobalStyles>
-    </Suspense>
+    <AuthContextProvider>
+
+      <Suspense fallback={null}>
+        <GlobalStyles>
+          <App />
+        </GlobalStyles>
+      </Suspense>
+    </AuthContextProvider>
+
   </React.StrictMode>
 );
 

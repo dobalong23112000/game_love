@@ -7,16 +7,13 @@ import CircleAddIcon from "components/Icons/CircleAddIcon";
 import CircleReloadIcon from "components/Icons/CircleReloadIcon";
 import CircleHomeIcon from "components/Icons/CircleHomeIcon";
 import CircleMenuIcon from "components/Icons/CircleMenuIcon";
-import { listQuestionGame } from "helpers/constant";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "contexts/AuthContext";
-import card1 from "assets/images/card_1.png";
-import card2 from "assets/images/card_2.png";
-import card3 from "assets/images/card_3.png";
 import UserApi from "api/UserApi";
 import GetMessageValidate from "helpers/GetMessageValidate";
 import TinderCard from "react-tinder-card";
 import Loader from "components/Loading/Loader/Loader";
+import generateImg from "helpers/generateImg ";
 const cx = classNames.bind(style);
 
 const Game = () => {
@@ -27,7 +24,8 @@ const Game = () => {
   const [stt, setStt] = useState(0);
   const navigate = useNavigate();
   const [listQuestion, setListQuestion] = useState([]);
- const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [loadedUser, setLoadedUser] = useState(false);
   const onSwipe = (direction, item) => {
     setStt(item.stt);
   };
@@ -43,6 +41,43 @@ const Game = () => {
     }
   };
   useEffect(() => {
+    const fetchData = async () => {
+      await loadUser();
+      setLoadedUser(true);
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (loadedUser) {
+      const reversedArray = [...authState?.user?.infoQuestion].reverse();
+      let arrayQuestionPlayed = authState?.user?.infoQuestionPlayed;
+      const result = reversedArray.filter(
+        (item1) =>
+          !arrayQuestionPlayed.some(
+            (item2) => item2.stt === item1.stt && item2.name === item1.name
+          )
+      );
+      let sttQuestionPlayed = 0
+      if (arrayQuestionPlayed.length !== 0) {
+        sttQuestionPlayed = arrayQuestionPlayed[arrayQuestionPlayed.length - 1].stt;
+
+      }
+      setStt(sttQuestionPlayed)
+      setListQuestion(result);
+    }
+
+  }, [loadedUser, authState?.user?.infoQuestion, authState?.user?.infoQuestionPlayed]);
+  const handleReloadQuestion = async () => {
+    setLoading(true)
+    await questionPlayed(0);
+    await loadUser();
+    window.location.reload()
+    setLoading(false)
+  };
+  useEffect(() => {
     if (stt === 100) {
       setActiveLastHeart(true);
     }
@@ -51,25 +86,7 @@ const Game = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stt]);
-  useEffect(() => {
-    const reversedArray = [...authState?.user?.infoQuestion].reverse();
-    let arrayQuestionPlayed = authState?.user?.infoQuestionPlayed;
-    const result = reversedArray.filter(
-      (item1) =>
-        !arrayQuestionPlayed.some(
-          (item2) => item2.stt === item1.stt && item2.name === item1.name
-        )
-    );
 
-    setListQuestion(result);
-  }, [authState?.user?.infoQuestion, authState?.user?.infoQuestionPlayed]);
-  const handleReloadQuestion = async () => {
-    setLoading(true)
-    await questionPlayed(0);
-    await loadUser();
-    setStt(0)
-    setLoading(false)
-  };
   return (
     <>
       {loading && <Loader />}
@@ -118,7 +135,7 @@ const Game = () => {
                       onSwipe={(dir) => {
                         onSwipe(dir, item);
                       }}
-                      onCardLeftScreen={() => {}}
+                      onCardLeftScreen={() => { }}
                       preventSwipe={["up", "down"]}
                       key={item.stt}
                     >
@@ -126,7 +143,7 @@ const Game = () => {
                         style={{
                           width: "327px",
                           height: "472px",
-                          backgroundImage: `url(${card1})`,
+                          backgroundImage: `url(${generateImg(index)})`,
                           backgroundPosition: "center",
                           backgroundSize: "cover",
                           backgroundRepeat: "no-repeat",
@@ -154,29 +171,26 @@ const Game = () => {
             onClick={() => {
               setActiveIcon(!activeIcon);
             }}
-            className={`${
-              activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
-            }`}
+            className={`${activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
+              }`}
           >
             <CircleAddIcon />
           </div>
           <div className="d-flex">
             <div
-              className={`${
-                activeIcon
-                  ? cx("active-circle-reload", "ms-4")
-                  : cx("nonactive-circle-reload", "ms-4")
-              }`}
+              className={`${activeIcon
+                ? cx("active-circle-reload", "ms-4")
+                : cx("nonactive-circle-reload", "ms-4")
+                }`}
               onClick={handleReloadQuestion}
             >
               <CircleReloadIcon />
             </div>
             <div
-              className={`${
-                activeIcon
-                  ? cx("active-circle-home", "ms-4")
-                  : cx("nonactive-circle-home", "ms-4")
-              }`}
+              className={`${activeIcon
+                ? cx("active-circle-home", "ms-4")
+                : cx("nonactive-circle-home", "ms-4")
+                }`}
               onClick={() => {
                 navigate("/home");
               }}
@@ -184,11 +198,10 @@ const Game = () => {
               <CircleHomeIcon />
             </div>
             <div
-              className={`${
-                activeIcon
-                  ? cx("active-circle-menu", "ms-4")
-                  : cx("nonactive-circle-menu", "ms-4")
-              }`}
+              className={`${activeIcon
+                ? cx("active-circle-menu", "ms-4")
+                : cx("nonactive-circle-menu", "ms-4")
+                }`}
               onClick={() => {
                 navigate("/history");
               }}

@@ -6,20 +6,39 @@ import DeleteCircle from "components/Icons/DeleteCircle";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "contexts/AuthContext";
 import Loader from "components/Loading/Loader/Loader";
+import UserApi from "api/UserApi";
+import GetMessageValidate from "helpers/GetMessageValidate";
 const cx = classNames.bind(style);
 const History = () => {
   const { loadUser, authState } = useContext(AuthContext);
-  // const [listQuestion, setListQuestion] = useState(
-  //   authState?.user?.infoQuestionPlayed ?? []
-  // );
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
-    loadUser();
+    const fetchData = async () => {
+      await loadUser();
+    }
+    fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const handleBackGame = async (stt) => {
+    setLoading(true)
+    try {
+      const response = await UserApi.update({ stt: stt - 1 });
+      if (response?.data?.status === 200) {
+        await loadUser()
+        navigate('/game')
+
+      } else {
+        GetMessageValidate("Có lỗi xảy ra trên hệ thống!");
+      }
+    } catch (e) {
+      GetMessageValidate("Có lỗi xảy ra trên hệ thống!");
+    }
+    setLoading(false)
+  }
   return (
     <>
-      {authState?.authLoading && <Loader />}
+      {(authState?.authLoading || loading) && <Loader />}
       <div className={cx("wrapper")}>
         <div className={cx("background_header")}>
           <div className="text-center mb-5 mt-5 position-relative">
@@ -46,11 +65,15 @@ const History = () => {
             authState?.user?.infoQuestionPlayed.map((item, index) => {
               return (
                 <div
+                  onClick={async () => {
+                    await handleBackGame(item.stt)
+                  }}
                   className={cx(
                     "item-question",
                     "mb-4 d-flex align-items-center justify-content-between"
                   )}
                   key={index}
+
                 >
                   <div className={cx("stt", "w-30")}>
                     <div

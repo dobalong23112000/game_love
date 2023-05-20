@@ -160,21 +160,25 @@ const Auth = () => {
     setLoading(false);
   };
 
- 
- 
+  if (authState.isAuthenticated) {
+    const lastPath = sessionStorage.getItem('lastPath');
+    if (lastPath) {
+      return <Navigate to={`${lastPath}`} replace={true} />
+    }
+    return <Navigate to="/home" replace={true} />
+  }
+
   return (
     <>
       {authState.authLoading && <Loader />}
       {loading && <Loader />}
       <div
-        className={`${cx("wrapper")} ${
-          isLogin ? "login_background" : "register_background"
-        }`}
+        className={`${cx("wrapper")} ${isLogin ? "login_background" : "register_background"
+          }`}
       >
         <div
-          className={`${cx("login-text")} mt-5 ${
-            isLogin ? "active-text-login" : "nonactive-text-login"
-          }`}
+          className={`${cx("login-text")} mt-5 ${isLogin ? "active-text-login" : "nonactive-text-login"
+            }`}
           onClick={() => {
             setIsLogin(true);
             resetRegister();
@@ -185,9 +189,8 @@ const Auth = () => {
         </div>
 
         <div
-          className={`${
-            !isLogin ? "active-form-register" : "active-form-login"
-          }`}
+          className={`${!isLogin ? "active-form-register" : "active-form-login"
+            }`}
         ></div>
         {isLogin && (
           <Form
@@ -264,9 +267,8 @@ const Auth = () => {
         )}
 
         <div
-          className={`${cx("footer-register")} ${
-            isLogin ? "nonactive-footer" : "active-footer"
-          }`}
+          className={`${cx("footer-register")} ${isLogin ? "nonactive-footer" : "active-footer"
+            }`}
           onClick={() => {
             setIsLogin(false);
           }}
@@ -283,9 +285,8 @@ const Auth = () => {
           </div>
           {!isLogin && (
             <Form
-              className={`d-flex justify-content-center align-items-center flex-column ${
-                !!isLogin ? "active-form" : "nonactive-form"
-              }`}
+              className={`d-flex justify-content-center align-items-center flex-column ${!!isLogin ? "active-form" : "nonactive-form"
+                }`}
               style={{ position: "absolute", top: "10vh" }}
               name="register_form"
             >
@@ -309,9 +310,8 @@ const Auth = () => {
                   onChange={email_register.onChange}
                   onBlur={email_register.onBlur}
                   innerRef={email_register.ref}
-                  className={`${
-                    errors?.email_register && `input-error`
-                  } register-input`}
+                  className={`${errors?.email_register && `input-error`
+                    } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.email_register?.message}
@@ -337,9 +337,8 @@ const Auth = () => {
                   onChange={phone_register.onChange}
                   onBlur={phone_register.onBlur}
                   innerRef={phone_register.ref}
-                  className={`${
-                    errors?.phone_register && `input-error`
-                  } register-input`}
+                  className={`${errors?.phone_register && `input-error`
+                    } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.phone_register?.message}
@@ -365,9 +364,8 @@ const Auth = () => {
                   onChange={username.onChange}
                   onBlur={username.onBlur}
                   innerRef={username.ref}
-                  className={`${
-                    errors?.username && `input-error`
-                  } register-input`}
+                  className={`${errors?.username && `input-error`
+                    } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.username?.message}
@@ -393,9 +391,8 @@ const Auth = () => {
                   onChange={password_register.onChange}
                   onBlur={password_register.onBlur}
                   innerRef={password_register.ref}
-                  className={`${
-                    errors?.password_register && `input-error`
-                  } register-input`}
+                  className={`${errors?.password_register && `input-error`
+                    } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.password_register?.message}
@@ -421,9 +418,8 @@ const Auth = () => {
                   onChange={confirm_password_register.onChange}
                   onBlur={confirm_password_register.onBlur}
                   innerRef={confirm_password_register.ref}
-                  className={`${
-                    errors?.confirm_password_register && `input-error`
-                  } register-input`}
+                  className={`${errors?.confirm_password_register && `input-error`
+                    } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.confirm_password_register?.message}

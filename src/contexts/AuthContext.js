@@ -11,7 +11,11 @@ const AuthContextProvider = ({ children }) => {
     user: null,
   });
   useEffect(() => {
-    loadUser();
+    const fetchData = async () => {
+      await loadUser();
+
+    }
+    fetchData()
   }, []);
   // Authenticate user
   const loadUser = async () => {
@@ -63,7 +67,7 @@ const AuthContextProvider = ({ children }) => {
 
     await loadUser();
   };
-  const authContextData = { loginUser, authState, logoutUser, loadUser,setAuthState };
+  const authContextData = { loginUser, authState, logoutUser, loadUser, setAuthState };
   return (
     <AuthContext.Provider value={authContextData}>
       {children}
