@@ -15,11 +15,75 @@
   bottom: 30px;
   left: 20px;
 }
+.list_card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  animation: open-card 0.4s ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+.title {
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  font-weight: 800;
+  color: rgba(87, 71, 188, 1);
+  padding-left: 26px;
+  padding-left: 26px;
+}
+.header_card {
+  line-height: 22px;
+  font-family: "Montserrat";
+  padding: 15px 20px;
+  color: white;
+  font-size: 18px;
+}
+.content_card {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  font-family: "Montserrat";
+  padding-left: 20px;
+  padding-right: 20px;
+  color: white;
+}
+.last_heart {
+  background-image: url("../../assets/images/heart_last.png");
+  height: 55vh;
+  width: 55vh;
+  background-position: center;
+  background-size: cover;
+  z-index: 100;
+  animation: open-last-heart 0.4s ease-out;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+@keyframes open-last-heart {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes open-card {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.swipe {
+  position: absolute;
+}
 .background1 {
   width: 100%;
-  height: calc(var(--window-height) / 2);
+  height: calc(3 * var(--window-height) / 4);
   background-image: url("../../assets/images/game_background1.png");
-  animation: active-background1 0.4s ease-out;
+  animation: open-background1 0.4s ease-in-out;
   animation-delay: 1s;
   animation-fill-mode: forwards;
   background-size: cover;
@@ -27,39 +91,90 @@
   position: absolute;
   top: 0;
   z-index: 1;
-  transform: scale(1, 2);
+  transform: scale(1, 1);
+  background-size: 120%;
 }
-@keyframes active-background1 {
+@keyframes open-background1 {
   from {
-    background-image: url("../../assets/images/game_background1.png");
+    transform: scale(1, 1);
   }
   to {
     height: calc(var(--window-height) / 2);
-    transform: scale(1,1);
+    top: -80px;
+  }
+}
+.background1-closed {
+  width: 100%;
+  height: calc(var(--window-height) / 2);
+  background-image: url("../../assets/images/game_background1.png");
+  animation: closed-background1 0.4s ease-in-out;
+  animation-fill-mode: forwards;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: -80px;
+  z-index: 1;
+  transform: scale(1, 1);
+  background-size: 120%;
+}
+@keyframes closed-background1 {
+  from {
+    height: calc(var(--window-height) / 2);
+    top: -80px;
+  }
+  to {
+    height: calc(3 * var(--window-height) / 4);
+    top: 0;
   }
 }
 .background2 {
   width: 100%;
-  height: calc(var(--window-height) / 2);
+  height: calc(3 * var(--window-height) / 4);
   background-image: url("../../assets/images/game_background2.png");
-  animation: active-background2 0.4s ease-out;
+  animation: open-background2 0.4s ease-in-out;
   animation-fill-mode: forwards;
   animation-delay: 1s;
   background-size: cover;
   background-position: center;
   position: absolute;
   bottom: 0;
-  transform: scale(1, 2);
+  transform: scale(1, 1);
+  background-size: 120%;
 }
-@keyframes active-background2 {
+.background2-closed {
+  width: 100%;
+  height: calc(var(--window-height) / 2);
+  background-image: url("../../assets/images/game_background2.png");
+  animation: closed-background2 0.4s ease-in-out;
+  animation-fill-mode: forwards;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  bottom: -70px;
+  transform: scale(1, 1);
+  background-size: 120%;
+}
+
+@keyframes open-background2 {
   from {
-    background-image: url("../../assets/images/game_background2.png");
+    transform: scale(1, 1);
   }
   to {
     height: calc(var(--window-height) / 2);
-    transform: scale(1,1);
+    bottom: -70px;
   }
 }
+@keyframes closed-background2 {
+  from {
+    height: calc(var(--window-height) / 2);
+    bottom: -70px;
+  }
+  to {
+    height: calc(3 * var(--window-height) / 4);
+    bottom: 0;
+  }
+}
+
 // icon add
 .active-circle-add {
   transform: rotate(0deg);

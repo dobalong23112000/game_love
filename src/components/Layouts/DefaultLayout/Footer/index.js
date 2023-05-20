@@ -26,7 +26,7 @@ const Footer = () => {
         <div className={cx('footer')}>
             <div className={cx('wrapper')}>
                 <div className={activeItem === 1 ? cx('active-item') : ''} onClick={() => {
-                    navigation('/home')
+                    navigation("/home")
                     setActiveItem(1)
                 }}>
                     {/* <HeartFooter  /> */}

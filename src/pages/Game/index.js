@@ -1,93 +1,204 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import style from "./style.module.scss";
-import bg1img from "assets/images/game_background1_open.png";
-import bg2img from "assets/images/game_background2_open.png";
 import logo_liam from "assets/images/logo_liam.png";
 import { Button } from "reactstrap";
 import CircleAddIcon from "components/Icons/CircleAddIcon";
 import CircleReloadIcon from "components/Icons/CircleReloadIcon";
 import CircleHomeIcon from "components/Icons/CircleHomeIcon";
 import CircleMenuIcon from "components/Icons/CircleMenuIcon";
+import { listQuestionGame } from "helpers/constant";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "contexts/AuthContext";
+import card1 from "assets/images/card_1.png";
+import card2 from "assets/images/card_2.png";
+import card3 from "assets/images/card_3.png";
+import UserApi from "api/UserApi";
+import GetMessageValidate from "helpers/GetMessageValidate";
+import TinderCard from "react-tinder-card";
+import Loader from "components/Loading/Loader/Loader";
 const cx = classNames.bind(style);
 
 const Game = () => {
+  const { authState, loadUser } = useContext(AuthContext);
   const [activeIcon, setActiveIcon] = useState(false);
+  const [activeGame, setActiveGame] = useState(false);
+  const [activeLastHeart, setActiveLastHeart] = useState(false);
+  const [stt, setStt] = useState(0);
+  const navigate = useNavigate();
+  const [listQuestion, setListQuestion] = useState([]);
+ const [loading,setLoading] = useState(false)
+  const onSwipe = (direction, item) => {
+    setStt(item.stt);
+  };
+  const questionPlayed = async (sttQuestion) => {
+    try {
+      const response = await UserApi.update({ stt: sttQuestion });
+      if (response?.data?.status === 200) {
+      } else {
+        GetMessageValidate("Có lỗi xảy ra trên hệ thống!");
+      }
+    } catch (e) {
+      GetMessageValidate("Có lỗi xảy ra trên hệ thống!");
+    }
+  };
+  useEffect(() => {
+    if (stt === 100) {
+      setActiveLastHeart(true);
+    }
+    if (stt !== 0) {
+      questionPlayed(stt);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stt]);
+  useEffect(() => {
+    const reversedArray = [...authState?.user?.infoQuestion].reverse();
+    let arrayQuestionPlayed = authState?.user?.infoQuestionPlayed;
+    const result = reversedArray.filter(
+      (item1) =>
+        !arrayQuestionPlayed.some(
+          (item2) => item2.stt === item1.stt && item2.name === item1.name
+        )
+    );
+
+    setListQuestion(result);
+  }, [authState?.user?.infoQuestion, authState?.user?.infoQuestionPlayed]);
+  const handleReloadQuestion = async () => {
+    setLoading(true)
+    await questionPlayed(0);
+    await loadUser();
+    setStt(0)
+    setLoading(false)
+  };
   return (
-    <div className={cx("wrapper")}>
-      <div className={cx("logo")}>
-        <img src={logo_liam} width={113} height={30} alt=""></img>
-      </div>
-      <div className={cx("background1")}></div>
-      <div className={cx("background2")}></div>
-      <div
-        style={{
-          width: "100%",
-          height: "calc(var(--window-height))",
-        }}
-        className="d-flex align-items-center justify-content-center flex-column"
-      >
+    <>
+      {loading && <Loader />}
+
+      <div className={cx("wrapper")}>
+        <div className={cx("logo")}>
+          <img src={logo_liam} width={113} height={30} alt=""></img>
+        </div>
+        <div
+          className={cx(
+            `${!activeGame ? "background1" : "background1-closed"}`
+          )}
+        ></div>
+        <div
+          className={cx(
+            `${!activeGame ? "background2" : "background2-closed"}`
+          )}
+        ></div>
         <div
           style={{
-            fontSize: "20px",
-            lineHeight: "24px",
-            textAlign: "center",
-            fontWeight: 800,
-            color: "rgba(87, 71, 188, 1)",
-            paddingLeft: "26px",
-            paddingRight: "26px",
+            width: "100%",
+            height: "calc(var(--window-height))",
           }}
+          className="d-flex align-items-center justify-content-center flex-column"
         >
-          TRƯỢT SANG PHẢI HOẶC TRÁI ĐỂ XEM CÁC CÂU HỎI
+          {!activeGame ? (
+            <>
+              <div className={cx("title")}>
+                TRƯỢT SANG PHẢI HOẶC TRÁI ĐỂ XEM CÁC CÂU HỎI
+              </div>
+              <div
+                onClick={() => {
+                  setActiveGame(true);
+                }}
+              >
+                <Button className={"button_submit mt-5"}>Let's go</Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={cx("list_card")} style={{ zIndex: 100 }}>
+                {listQuestion.map((item, index) => {
+                  return (
+                    <TinderCard
+                      className={cx("swipe")}
+                      onSwipe={(dir) => {
+                        onSwipe(dir, item);
+                      }}
+                      onCardLeftScreen={() => {}}
+                      preventSwipe={["up", "down"]}
+                      key={item.stt}
+                    >
+                      <div
+                        style={{
+                          width: "327px",
+                          height: "472px",
+                          backgroundImage: `url(${card1})`,
+                          backgroundPosition: "center",
+                          backgroundSize: "cover",
+                          backgroundRepeat: "no-repeat",
+                          position: "relative",
+                          borderRadius: "48px",
+                        }}
+                      >
+                        <div className={cx("header_card")}>
+                          ĐIỀU MÌNH CHƯA NÓI
+                        </div>
+                        <div className={cx("content_card")}>{item.name}</div>
+                      </div>
+                    </TinderCard>
+                  );
+                })}
+
+                {activeLastHeart && <div className={cx("last_heart")}></div>}
+              </div>
+            </>
+          )}
         </div>
-        <div>
-          <Button className={"button_submit mt-5"} type="submit">
-            Let's go
-          </Button>
+
+        <div className={cx("icon-footer", "d-flex align-items-center")}>
+          <div
+            onClick={() => {
+              setActiveIcon(!activeIcon);
+            }}
+            className={`${
+              activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
+            }`}
+          >
+            <CircleAddIcon />
+          </div>
+          <div className="d-flex">
+            <div
+              className={`${
+                activeIcon
+                  ? cx("active-circle-reload", "ms-4")
+                  : cx("nonactive-circle-reload", "ms-4")
+              }`}
+              onClick={handleReloadQuestion}
+            >
+              <CircleReloadIcon />
+            </div>
+            <div
+              className={`${
+                activeIcon
+                  ? cx("active-circle-home", "ms-4")
+                  : cx("nonactive-circle-home", "ms-4")
+              }`}
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              <CircleHomeIcon />
+            </div>
+            <div
+              className={`${
+                activeIcon
+                  ? cx("active-circle-menu", "ms-4")
+                  : cx("nonactive-circle-menu", "ms-4")
+              }`}
+              onClick={() => {
+                navigate("/history");
+              }}
+            >
+              <CircleMenuIcon />
+            </div>
+          </div>
         </div>
       </div>
-      <div className={cx("icon-footer", "d-flex align-items-center")}>
-        <div
-          onClick={() => {
-            setActiveIcon(!activeIcon);
-          }}
-          className={`${
-            activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
-          }`}
-        >
-          <CircleAddIcon />
-        </div>
-        <div className="d-flex">
-          <div
-            className={`${
-              activeIcon
-                ? cx("active-circle-reload", "ms-4")
-                : cx("nonactive-circle-reload", "ms-4")
-            }`}
-          >
-            <CircleReloadIcon />
-          </div>
-          <div
-            className={`${
-              activeIcon
-                ? cx("active-circle-home", "ms-4")
-                : cx("nonactive-circle-home", "ms-4")
-            }`}
-          >
-            <CircleHomeIcon />
-          </div>
-          <div
-            className={`${
-              activeIcon
-                ? cx("active-circle-menu", "ms-4")
-                : cx("nonactive-circle-menu", "ms-4")
-            }`}
-          >
-            <CircleMenuIcon />
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

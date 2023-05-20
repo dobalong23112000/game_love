@@ -37,6 +37,16 @@ body {
   border-radius: 20px;
   padding-bottom: 30px;
 }
+.SmallCard {
+  .modal-content {
+    width: 70%;
+    margin: auto;
+    background-color: rgba(255, 189, 234, 1);
+    // text-align: center;
+    // padding:40px 50px;
+    border-radius: 20px;
+  }
+}
 
 .icon_save {
   position: absolute;

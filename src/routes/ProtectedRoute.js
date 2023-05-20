@@ -6,7 +6,6 @@ import { Navigate } from 'react-router-dom';
 const ProtectedRoute = ({ component }) => {
     const { authState } = useContext(AuthContext);
     const Page = component;
-
     if (!authState.isAuthenticated) {
         return <Navigate to="/auth" replace />;
     }

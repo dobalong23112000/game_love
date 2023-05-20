@@ -11,7 +11,9 @@ import { listBigCard, listSmallCard } from "helpers/constant";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import HeartIcon from "components/Icons/HeartIcon";
-import { Progress } from "reactstrap";
+import { Button, Modal, ModalBody, Progress } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import qr_code from "assets/images/qr_code.png";
 const cx = classNames.bind(style);
 
 const Home = () => {
@@ -20,6 +22,10 @@ const Home = () => {
   const handleClickOutside = () => {
     setIsFooterActive(false);
   };
+  const navigate = useNavigate();
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [activeSmallCard, setActiveSmallCard] = useState();
+  const toggle = () => setIsOpenModal(!isOpenModal);
   useEffect(() => {
     if (isFooterActive) {
       if (valueProgress === 0) {
@@ -36,6 +42,10 @@ const Home = () => {
       setValueProgress(0);
     }
   }, [valueProgress, isFooterActive]);
+  const onClickSmallCard = (item) => {
+    setIsOpenModal(true);
+    setActiveSmallCard(item);
+  };
   return (
     <div className={cx("wrapper")}>
       <div onClick={handleClickOutside} style={{ paddingBottom: "80px" }}>
@@ -58,12 +68,17 @@ const Home = () => {
               slidesPerView={2.5}
               speed={500}
               onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper)}
+              // onSwiper={(swiper) => console.log(swiper)}
               style={{ paddingLeft: "60px" }}
             >
               {listSmallCard.map((item, index) => {
                 return (
-                  <SwiperSlide key={index}>
+                  <SwiperSlide
+                    key={index}
+                    onClick={() => {
+                      onClickSmallCard(index);
+                    }}
+                  >
                     <SmallCard icon={item.icon} content={item.content} />
                   </SwiperSlide>
                 );
@@ -83,7 +98,7 @@ const Home = () => {
               slidesPerView={1.5}
               onSlideChange={() => {}}
               speed={500}
-              onSwiper={(swiper) => {}}
+              // onSwiper={(swiper) => {}}
               style={{ paddingLeft: "45px" }}
             >
               {listBigCard.map((item, index) => {
@@ -121,6 +136,9 @@ const Home = () => {
             className={cx("img-footer-unlock")}
             onClick={() => {
               setIsFooterActive(true);
+              if (isFooterActive) {
+                navigate("/game");
+              }
             }}
           ></div>
         )}
@@ -193,6 +211,55 @@ const Home = () => {
           </div>
         )}
       </div>
+
+      <Modal
+        isOpen={isOpenModal}
+        toggle={toggle}
+        centered
+        className="SmallCard"
+      >
+        <ModalBody>
+          <div>
+            {activeSmallCard === 0 && (
+              <div style={{ margin: "40px 50px" }}>
+                <img src={qr_code} alt="" width={"100%"}></img>
+              </div>
+            )}
+
+            {activeSmallCard === 1 && (
+              <div className={cx("content-smallcard-active")}>
+                BẠN VÀ NGƯỜI ẤY HÃY CÙNG KHÁM PHÁ “ĐIỀU MÌNH CHƯA NÓI?” TẠI MỘT
+                ĐỊA ĐIỂM RIÊNG TƯ VÀ BẬT PLAYLIST MÀ LIAM ĐÃ CHUẨN BỊ CHO BẠN
+                NHÉ!
+              </div>
+            )}
+
+            {activeSmallCard === 2 && (
+              <div className={cx("content-smallcard-active")}>
+                LIAM LÀ MỘT NỀN TẢNG CÔNG NGHỆ SỐ 1 TẠI VIỆT NAM CHUYÊN CUNG CẤP
+                CÁC LOẠI HÌNH THÔNG TIN VÀ GIẢI TRÍ TỚI CÁC CÁ NHÂN VÀ DOANH
+                NGHIỆP.
+              </div>
+            )}
+            {activeSmallCard === 3 && (
+              <div className={cx("wrap_logout")}>
+                <div style={{ fontWeight: 700 }} className="text-center">
+                  ĐĂNG XUẤT
+                </div>
+                <div className="d-flex justify-content-between mt-5 w-100">
+                  <Button className={cx("button_logout")}>
+                    <div className={cx("text_logout")}>YES</div>
+                  </Button>
+                  <Button className={cx("button_logout")}>
+                    {" "}
+                    <div className={cx("text_logout")}>NO</div>
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

@@ -1,72 +1,82 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { privateRoutes, publicRoutes } from 'routes';
-import DefaultLayout from 'components/Layouts/DefaultLayout';
-import { Fragment } from 'react';
-import ScrollToTop from 'helpers/ScrollToTop';
-import ProtectedRoute from 'routes/ProtectedRoute';
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { privateRoutes, publicRoutes } from "routes";
+import DefaultLayout from "components/Layouts/DefaultLayout";
+import { Fragment, Suspense, useContext } from "react";
+import ScrollToTop from "helpers/ScrollToTop";
+import ProtectedRoute from "routes/ProtectedRoute";
+import { AuthContext } from "contexts/AuthContext";
 
 function App() {
+  const { authState } = useContext(AuthContext);
   const windowHeight = () => {
-    const doc = document.documentElement
-    doc.style.setProperty('--window-height', `${window.innerHeight}px`)
-  }
-  window.addEventListener('resize', windowHeight);
+    const doc = document.documentElement;
+    doc.style.setProperty("--window-height", `${window.innerHeight}px`);
+  };
+  window.addEventListener("resize", windowHeight);
   windowHeight();
   return (
-      <Router>
-        <div className='App'>
-          <ScrollToTop />
-          <Routes >
-            {publicRoutes.map((route) => {
-              let Layout = DefaultLayout
-              if (route.layout) {
-                Layout = route.layout
-              } else if (route.layout === null) {
-                Layout = Fragment
-              }
-              const Page = route.component;
-              return (
-                <Route
-                  exact={true}
-                  key={route.path}
-                  path={route.path}
-                  element={
-                    (
+    <Router>
+      <div className="App">
+        <ScrollToTop />
+        <Routes>
+          {publicRoutes.map((route) => {
+            let Layout = DefaultLayout;
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            }
+            const Page = route.component;
+            return (
+              <Route
+                exact={true}
+                key={route.path}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+          {privateRoutes.map((route) => {
+            let Layout = DefaultLayout;
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            }
+            const Page = route.component;
+            return (
+              <Route
+                exact={true}
+                key={route.path}
+                path={route.path}
+                element={
+                  !authState.isAuthenticated ? (
+                    <Navigate to="/auth" replace={true} />
+                  ) : (
+                    <Suspense fallback={null}>
                       <Layout>
                         <Page />
-                      </Layout>)
-
-                  } />)
-            })}
-            {privateRoutes.map((route) => {
-              let Layout = DefaultLayout
-              if (route.layout) {
-                Layout = route.layout
-              } else if (route.layout === null) {
-                Layout = Fragment
-              }
-              return (
-                <Route
-                  exact={true}
-                  key={route.path}
-                  path={route.path}
-                  element={
-                    (
-                      <Layout>
-                        <ProtectedRoute component={route.component} />
-                      </Layout>)
-
-                  } />)
-            })}
-          </Routes>
-        </div>
-      </Router>
-
-
+                      </Layout>
+                    </Suspense>
+                  )
+                }
+              />
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

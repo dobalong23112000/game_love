@@ -7,32 +7,21 @@ const paramsSerializer = (params) => {
 }
 const UserApi = {
     getInfo: (params) => {
-        const url = `${windowEnvConfig.REACT_APP_BASE_API_URL}/expose/nfc-love/my-selft`;
+        const url = `${windowEnvConfig.REACT_APP_BASE_API_URL}/gamelove-service/user-info`;
         return axios.get(url, {
             params,
             paramsSerializer
         })
     },
+  
     update: (data) => {
-        const url = `${windowEnvConfig.REACT_APP_BASE_API_URL}/expose/nfc-love/update`;
+        const url = `${windowEnvConfig.REACT_APP_BASE_API_URL}/gamelove-service/question-played`;
         return axios.post(
             `${url}`,
             data,
         )
     },
-    updateMusic: (data) => {
-        console.log({ data })
-        const url = `${windowEnvConfig.REACT_APP_BASE_API_URL}/expose/nfc-love/upload-file`;
-        return axios.post(
-            `${url}`,
-            data, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-
-        )
-    },
+ 
    
 
 }
