@@ -155,50 +155,6 @@ body {
   box-shadow: none !important;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  input[type="range"] {
-    overflow: hidden;
-    width: 100%;
-    -webkit-appearance: none;
-    background-color: white;
-    height: 15px;
-  }
-
-  input[type="range"]::-webkit-slider-runnable-track {
-    height: 10px;
-    -webkit-appearance: none;
-    color: rgb(225, 143, 143);
-    margin-top: -1px;
-  }
-
-  input[type="range"]::-webkit-slider-thumb {
-    width: 10px;
-    -webkit-appearance: none;
-    height: 10px;
-    cursor: ew-resize;
-    border-radius: 50%;
-    background: rgb(225, 143, 143);
-    box-shadow: -294px 0 0 294px rgb(225, 143, 143);
-  }
-}
-
-/** FF*/
-input[type="range"]::-moz-range-progress {
-  background-color: rgb(225, 143, 143);
-}
-
-input[type="range"]::-moz-range-track {
-  background-color: white;
-}
-
-/* IE*/
-input[type="range"]::-ms-fill-lower {
-  background-color: rgb(225, 143, 143);
-}
-
-input[type="range"]::-ms-fill-upper {
-  background-color: white;
-}
 
 //Animation
 .active-text-register {
@@ -311,32 +267,6 @@ input[type="range"]::-ms-fill-upper {
   }
 }
 
-// .active-form-register {
-//     width: 342px;
-//     height: 496px;
-//     background-color: white;
-//     box-shadow: 0px -1px 0px 0px white;
-//     border-radius: 20px;
-//     animation: form-register-active .6s ease-in-out;
-//     animation-fill-mode: forwards;
-//     position: absolute;
-//     top: 125px;
-// }
-
-// @keyframes form-register-active {
-//     from {
-//         width: 342px;
-//         height: 496px;
-//         border-radius: 20px
-//     }
-
-//     to {
-//         top: 135px;
-//         width: 428px;
-//         height: 802px;
-//         border-radius: 100px
-//     }
-// }
 
 .active-form-login {
   top: 80px;

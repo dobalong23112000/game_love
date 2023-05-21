@@ -53,7 +53,7 @@ const Game = () => {
   useEffect(() => {
     if (loadedUser) {
       const reversedArray = [...authState?.user?.infoQuestion].reverse();
-      let arrayQuestionPlayed = authState?.user?.infoQuestionPlayed;
+      let arrayQuestionPlayed = authState?.user?.infoQuestionPlayed ?? [];
       const result = reversedArray.filter(
         (item1) =>
           !arrayQuestionPlayed.some(

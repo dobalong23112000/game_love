@@ -14,12 +14,10 @@ import Swal from "sweetalert2";
 import { AuthContext } from "contexts/AuthContext";
 import {
   Navigate,
-  useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
 import Loader from "components/Loading/Loader/Loader";
-import Loading from "components/Loading";
 import GetMessageValidate from "helpers/GetMessageValidate";
 const cx = classNames.bind(styles);
 const Auth = () => {

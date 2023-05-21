@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "routes";
 import DefaultLayout from "components/Layouts/DefaultLayout";
-import { Fragment, Suspense, useEffect } from "react";
+import { Fragment, Suspense } from "react";
 import ScrollToTop from "helpers/ScrollToTop";
 import ProtectedRoute from "routes/ProtectedRoute";
 

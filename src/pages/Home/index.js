@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import style from "./style.module.scss";
 import logo from "../../assets/images/liam_home.png";
@@ -14,6 +14,7 @@ import HeartIcon from "components/Icons/HeartIcon";
 import { Button, Modal, ModalBody, Progress } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import qr_code from "assets/images/qr_code.png";
+import { AuthContext } from "contexts/AuthContext";
 const cx = classNames.bind(style);
 
 const Home = () => {
@@ -26,6 +27,7 @@ const Home = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [activeSmallCard, setActiveSmallCard] = useState();
   const toggle = () => setIsOpenModal(!isOpenModal);
+  const { logoutUser } = useContext(AuthContext);
   useEffect(() => {
     if (isFooterActive) {
       if (valueProgress === 0) {
@@ -67,8 +69,7 @@ const Home = () => {
               spaceBetween={10}
               slidesPerView={2.5}
               speed={500}
-              onSlideChange={() => console.log("slide change")}
-              // onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={() => {}}
               style={{ paddingLeft: "60px" }}
             >
               {listSmallCard.map((item, index) => {
@@ -247,10 +248,20 @@ const Home = () => {
                   ĐĂNG XUẤT
                 </div>
                 <div className="d-flex justify-content-between mt-5 w-100">
-                  <Button className={cx("button_logout")}>
+                  <Button
+                    className={cx("button_logout")}
+                    onClick={() => {
+                      logoutUser();
+                    }}
+                  >
                     <div className={cx("text_logout")}>YES</div>
                   </Button>
-                  <Button className={cx("button_logout")}>
+                  <Button
+                    className={cx("button_logout")}
+                    onClick={() => {
+                      setIsOpenModal(false);
+                    }}
+                  >
                     {" "}
                     <div className={cx("text_logout")}>NO</div>
                   </Button>
