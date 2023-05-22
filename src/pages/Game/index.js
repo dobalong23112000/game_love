@@ -11,9 +11,10 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "contexts/AuthContext";
 import UserApi from "api/UserApi";
 import GetMessageValidate from "helpers/GetMessageValidate";
-import TinderCard from "react-tinder-card";
 import Loader from "components/Loading/Loader/Loader";
 import generateImg from "helpers/generateImg ";
+import getMessageSuccess from "helpers/getMessageSuccess";
+import TinderCard from "react-tinder-card";
 const cx = classNames.bind(style);
 
 const Game = () => {
@@ -26,6 +27,8 @@ const Game = () => {
   const [listQuestion, setListQuestion] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadedUser, setLoadedUser] = useState(false);
+
+  // swipe
   const onSwipe = (direction, item) => {
     setStt(item.stt);
   };
@@ -33,6 +36,7 @@ const Game = () => {
     try {
       const response = await UserApi.update({ stt: sttQuestion });
       if (response?.data?.status === 200) {
+        return true;
       } else {
         GetMessageValidate("Có lỗi xảy ra trên hệ thống!");
       }
@@ -48,7 +52,7 @@ const Game = () => {
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (loadedUser) {
@@ -60,33 +64,43 @@ const Game = () => {
             (item2) => item2.stt === item1.stt && item2.name === item1.name
           )
       );
-      let sttQuestionPlayed = 0
+      let sttQuestionPlayed = 0;
       if (arrayQuestionPlayed.length !== 0) {
-        sttQuestionPlayed = arrayQuestionPlayed[arrayQuestionPlayed.length - 1].stt;
-
+        sttQuestionPlayed =
+          arrayQuestionPlayed[arrayQuestionPlayed.length - 1].stt;
       }
-      setStt(sttQuestionPlayed)
+      setStt(sttQuestionPlayed);
       setListQuestion(result);
     }
-
-  }, [loadedUser, authState?.user?.infoQuestion, authState?.user?.infoQuestionPlayed]);
+  }, [
+    loadedUser,
+    authState?.user?.infoQuestion,
+    authState?.user?.infoQuestionPlayed,
+  ]);
   const handleReloadQuestion = async () => {
-    setLoading(true)
+    setLoading(true);
     await questionPlayed(0);
     await loadUser();
-    window.location.reload()
-    setLoading(false)
+    window.location.reload();
+    setLoading(false);
   };
   useEffect(() => {
     if (stt === 100) {
       setActiveLastHeart(true);
     }
     if (stt !== 0) {
-      questionPlayed(stt);
+      setListQuestion((prevCards) =>
+        prevCards.filter((card) => card.stt !== stt)
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stt]);
-
+  const handleSaveIcon = async () => {
+    const response = await questionPlayed(stt);
+    if (response) {
+      getMessageSuccess("Lưu câu hỏi thành công!");
+    }
+  };
   return (
     <>
       {loading && <Loader />}
@@ -118,7 +132,8 @@ const Game = () => {
                 TRƯỢT SANG PHẢI HOẶC TRÁI ĐỂ XEM CÁC CÂU HỎI
               </div>
               <div
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveGame(true);
                 }}
               >
@@ -135,7 +150,7 @@ const Game = () => {
                       onSwipe={(dir) => {
                         onSwipe(dir, item);
                       }}
-                      onCardLeftScreen={() => { }}
+                      onCardLeftScreen={() => {}}
                       preventSwipe={["up", "down"]}
                       key={item.stt}
                     >
@@ -171,26 +186,29 @@ const Game = () => {
             onClick={() => {
               setActiveIcon(!activeIcon);
             }}
-            className={`${activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
-              }`}
+            className={`${
+              activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
+            }`}
           >
             <CircleAddIcon />
           </div>
           <div className="d-flex">
             <div
-              className={`${activeIcon
-                ? cx("active-circle-reload", "ms-4")
-                : cx("nonactive-circle-reload", "ms-4")
-                }`}
+              className={`${
+                activeIcon
+                  ? cx("active-circle-reload", "ms-4")
+                  : cx("nonactive-circle-reload", "ms-4")
+              }`}
               onClick={handleReloadQuestion}
             >
               <CircleReloadIcon />
             </div>
             <div
-              className={`${activeIcon
-                ? cx("active-circle-home", "ms-4")
-                : cx("nonactive-circle-home", "ms-4")
-                }`}
+              className={`${
+                activeIcon
+                  ? cx("active-circle-home", "ms-4")
+                  : cx("nonactive-circle-home", "ms-4")
+              }`}
               onClick={() => {
                 navigate("/home");
               }}
@@ -198,15 +216,26 @@ const Game = () => {
               <CircleHomeIcon />
             </div>
             <div
-              className={`${activeIcon
-                ? cx("active-circle-menu", "ms-4")
-                : cx("nonactive-circle-menu", "ms-4")
-                }`}
+              className={`${
+                activeIcon
+                  ? cx("active-circle-menu", "ms-4")
+                  : cx("nonactive-circle-menu", "ms-4")
+              }`}
               onClick={() => {
                 navigate("/history");
               }}
             >
               <CircleMenuIcon />
+            </div>
+            <div
+              className={`${
+                activeIcon
+                  ? cx("active-circle-save", "ms-4")
+                  : cx("nonactive-circle-save", "ms-4")
+              }`}
+              onClick={handleSaveIcon}
+            >
+              <CircleReloadIcon />
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 .wrapper {
   height: var(--window-height);
+
 }
 .logo {
   position: absolute;
@@ -283,6 +284,34 @@
   }
   to {
     transform: translateX(-165px);
+    z-index: -1;
+  }
+}
+// icon save
+.active-circle-save {
+  transform: translateX(0px);
+  animation: active-save 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+.nonactive-circle-save {
+  transform: translateX(-220px);
+  animation: non-active-save 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes active-save {
+  from {
+    transform: translateX(-220px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+@keyframes non-active-save {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(-220px);
     z-index: -1;
   }
 }
