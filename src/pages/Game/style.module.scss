@@ -85,10 +85,10 @@
   height: calc(3 * var(--window-height) / 4);
   background-image: url("../../assets/images/game_background1.png");
   background-position: center;
+  background-position: center;
   position: absolute;
   z-index: 1;
   transform: scale(1, 1);
-  // background-size: 120%;
   top: 0;
 }
 .background1-open {
@@ -102,7 +102,7 @@
   }
   to {
     height: calc(var(--window-height) / 2);
-    top: -80px;
+    top: -100px;
   }
 }
 
@@ -113,7 +113,7 @@
 @keyframes closed-background1 {
   from {
     height: calc(var(--window-height) / 2);
-    top: -80px;
+    top: -100px;
   }
   to {
     height: calc(3 * var(--window-height) / 4);
@@ -128,7 +128,6 @@
   position: absolute;
   bottom: 0;
   transform: scale(1, 1);
-  // background-size: 120%;
 }
 .background2-open {
   animation: open-background2 0.4s ease-in-out;
@@ -147,13 +146,13 @@
   }
   to {
     height: calc(var(--window-height) / 2);
-    bottom: -70px;
+    bottom: -100px;
   }
 }
 @keyframes closed-background2 {
   from {
     height: calc(var(--window-height) / 2);
-    bottom: -70px;
+    bottom: -100px;
   }
   to {
     height: calc(3 * var(--window-height) / 4);

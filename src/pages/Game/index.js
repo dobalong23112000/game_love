@@ -83,8 +83,10 @@ const Game = () => {
   const handleReloadQuestion = async () => {
     setLoading(true);
     await questionPlayed(0);
-    await loadUser();
-    window.location.reload();
+    const reversedArray = [...authState?.user?.infoQuestion].reverse();
+    setListQuestion(reversedArray)
+    // await loadUser();
+    // window.location.reload();
     setLoading(false);
   };
   useEffect(() => {
@@ -166,6 +168,7 @@ const Game = () => {
                         style={{
                           width: "327px",
                           height: "472px",
+                          // backgroundColor: "black",
                           backgroundImage: `url(${generateImg(index)})`,
                           backgroundPosition: "center",
                           backgroundSize: "cover",
