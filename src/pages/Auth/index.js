@@ -4,6 +4,8 @@ import {
   AiFillPhone,
   AiFillLock,
   AiOutlineUser,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
 } from "react-icons/ai";
 import { Form, FormGroup, Input, Button } from "reactstrap";
 import classNames from "classnames/bind";
@@ -12,17 +14,26 @@ import { useForm } from "react-hook-form";
 import AuthApi from "api/AuthApi";
 import Swal from "sweetalert2";
 import { AuthContext } from "contexts/AuthContext";
-import {
-  Navigate,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Loader from "components/Loading/Loader/Loader";
 import GetMessageValidate from "helpers/GetMessageValidate";
 const cx = classNames.bind(styles);
 const Auth = () => {
   const { uuid } = useParams();
   const { loginUser, authState } = useContext(AuthContext);
+  const [passwordShown, setPasswordShown] = useState(false);
+
+  // Password toggle handler
+  const togglePassword = () => {
+    setPasswordShown(!passwordShown);
+  };
+
+  const [passwordRegisterShown, setPasswordRegisterShown] = useState(false);
+
+  // Password toggle handler
+  const togglePasswordRegister = () => {
+    setPasswordRegisterShown(!passwordRegisterShown);
+  };
   const [isLogin, setIsLogin] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const {
@@ -33,6 +44,7 @@ const Auth = () => {
   } = useForm();
   const [loading, setLoading] = useState(false);
   const navigation = useNavigate();
+
   // Form đăng nhập
   const onSubmitLogin = async (data) => {
     const { email, password } = data;
@@ -159,11 +171,11 @@ const Auth = () => {
   };
 
   if (authState.isAuthenticated) {
-    const lastPath = sessionStorage.getItem('lastPath');
+    const lastPath = sessionStorage.getItem("lastPath");
     if (lastPath) {
-      return <Navigate to={`${lastPath}`} replace={true} />
+      return <Navigate to={`${lastPath}`} replace={true} />;
     }
-    return <Navigate to="/home" replace={true} />
+    return <Navigate to="/home" replace={true} />;
   }
 
   return (
@@ -171,12 +183,14 @@ const Auth = () => {
       {authState.authLoading && <Loader />}
       {loading && <Loader />}
       <div
-        className={`${cx("wrapper")} ${isLogin ? "login_background" : "register_background"
-          }`}
+        className={`${cx("wrapper")} ${
+          isLogin ? "login_background" : "register_background"
+        }`}
       >
         <div
-          className={`${cx("login-text")} mt-5 ${isLogin ? "active-text-login" : "nonactive-text-login"
-            }`}
+          className={`${cx("login-text")} mt-5 ${
+            isLogin ? "active-text-login" : "nonactive-text-login"
+          }`}
           onClick={() => {
             setIsLogin(true);
             resetRegister();
@@ -187,8 +201,9 @@ const Auth = () => {
         </div>
 
         <div
-          className={`${!isLogin ? "active-form-register" : "active-form-login"
-            }`}
+          className={`${
+            !isLogin ? "active-form-register" : "active-form-login"
+          }`}
         ></div>
         {isLogin && (
           <Form
@@ -242,7 +257,7 @@ const Auth = () => {
               <Input
                 id="examplePassword"
                 placeholder="Mật khẩu"
-                type="password"
+                type={passwordShown ? "text" : "password"}
                 name={password.name}
                 onChange={password.onChange}
                 onBlur={password.onBlur}
@@ -251,6 +266,23 @@ const Auth = () => {
               />
               <div className="text-error mt-1 ps-4">
                 {errors?.password?.message}
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "15px",
+                  right: "18px",
+                  color: "rgba(87, 71, 188, 1)",
+                  fontWeight: 600,
+                  zIndex: 1,
+                }}
+                onClick={togglePassword}
+              >
+                {passwordShown ? (
+                  <AiOutlineEyeInvisible size={12} />
+                ) : (
+                  <AiOutlineEye size={12} />
+                )}
               </div>
             </FormGroup>
             <FormGroup
@@ -265,8 +297,9 @@ const Auth = () => {
         )}
 
         <div
-          className={`${cx("footer-register")} ${isLogin ? "nonactive-footer" : "active-footer"
-            }`}
+          className={`${cx("footer-register")} ${
+            isLogin ? "nonactive-footer" : "active-footer"
+          }`}
           onClick={() => {
             setIsLogin(false);
           }}
@@ -283,8 +316,9 @@ const Auth = () => {
           </div>
           {!isLogin && (
             <Form
-              className={`d-flex justify-content-center align-items-center flex-column ${!!isLogin ? "active-form" : "nonactive-form"
-                }`}
+              className={`d-flex justify-content-center align-items-center flex-column ${
+                !!isLogin ? "active-form" : "nonactive-form"
+              }`}
               style={{ position: "absolute", top: "10vh" }}
               name="register_form"
             >
@@ -308,8 +342,9 @@ const Auth = () => {
                   onChange={email_register.onChange}
                   onBlur={email_register.onBlur}
                   innerRef={email_register.ref}
-                  className={`${errors?.email_register && `input-error`
-                    } register-input`}
+                  className={`${
+                    errors?.email_register && `input-error`
+                  } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.email_register?.message}
@@ -335,8 +370,9 @@ const Auth = () => {
                   onChange={phone_register.onChange}
                   onBlur={phone_register.onBlur}
                   innerRef={phone_register.ref}
-                  className={`${errors?.phone_register && `input-error`
-                    } register-input`}
+                  className={`${
+                    errors?.phone_register && `input-error`
+                  } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.phone_register?.message}
@@ -362,8 +398,9 @@ const Auth = () => {
                   onChange={username.onChange}
                   onBlur={username.onBlur}
                   innerRef={username.ref}
-                  className={`${errors?.username && `input-error`
-                    } register-input`}
+                  className={`${
+                    errors?.username && `input-error`
+                  } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.username?.message}
@@ -384,16 +421,33 @@ const Auth = () => {
                 <Input
                   id="examplePassword"
                   placeholder="Mật khẩu"
-                  type="password"
+                  type={passwordRegisterShown ? "text" : "password"}
                   name={password_register.name}
                   onChange={password_register.onChange}
                   onBlur={password_register.onBlur}
                   innerRef={password_register.ref}
-                  className={`${errors?.password_register && `input-error`
-                    } register-input`}
+                  className={`${
+                    errors?.password_register && `input-error`
+                  } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.password_register?.message}
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "15px",
+                    right: "18px",
+                    fontWeight: 600,
+                    zIndex: 1,
+                  }}
+                  onClick={togglePasswordRegister}
+                >
+                  {passwordRegisterShown ? (
+                    <AiOutlineEyeInvisible size={12} color="white"/>
+                  ) : (
+                    <AiOutlineEye size={12} color="white"/>
+                  )}
                 </div>
               </FormGroup>
               <FormGroup className={cx("form_group")}>
@@ -411,16 +465,33 @@ const Auth = () => {
                 <Input
                   id="exampleConfirmPassword"
                   placeholder="Nhập lại mật khẩu"
-                  type="password"
+                  type={passwordRegisterShown ? "text" : "password"}
                   name={confirm_password_register.name}
                   onChange={confirm_password_register.onChange}
                   onBlur={confirm_password_register.onBlur}
                   innerRef={confirm_password_register.ref}
-                  className={`${errors?.confirm_password_register && `input-error`
-                    } register-input`}
+                  className={`${
+                    errors?.confirm_password_register && `input-error`
+                  } register-input`}
                 />
                 <div className="text-error mt-1 ps-4">
                   {errors?.confirm_password_register?.message}
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "15px",
+                    right: "18px",
+                    fontWeight: 600,
+                    zIndex: 1,
+                  }}
+                  onClick={togglePasswordRegister}
+                >
+                  {passwordRegisterShown ? (
+                    <AiOutlineEyeInvisible size={12} color="white"/>
+                  ) : (
+                    <AiOutlineEye size={12} color="white"/>
+                  )}
                 </div>
               </FormGroup>
               <FormGroup

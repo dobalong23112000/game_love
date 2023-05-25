@@ -7759,7 +7759,7 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-tinder-card@^1.2.0:
+react-tinder-card@^1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/react-tinder-card/-/react-tinder-card-1.6.2.tgz#d7ea67691973293ed9e3687fc2763003389c7baa"
   integrity sha512-jtdgINFQ4bNA7YoqnoS4Z603mYCtrRHVc+K4R6JHuUzjsRsgO7hEooCUXz++HF5WE+fkOHjkuc22w+rxUlkMJw==

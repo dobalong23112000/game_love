@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -7,15 +7,11 @@ import AuthContextProvider from "contexts/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <AuthContextProvider>
-
-      <Suspense fallback={null}>
-        <GlobalStyles>
-          <App />
-        </GlobalStyles>
-      </Suspense>
-    </AuthContextProvider>
-
+  <AuthContextProvider>
+    <GlobalStyles>
+      <App />
+    </GlobalStyles>
+  </AuthContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

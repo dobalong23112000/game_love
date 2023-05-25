@@ -1,13 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "routes";
 import DefaultLayout from "components/Layouts/DefaultLayout";
-import { Fragment, Suspense } from "react";
+import { Fragment } from "react";
 import ScrollToTop from "helpers/ScrollToTop";
 import ProtectedRoute from "routes/ProtectedRoute";
 
@@ -58,13 +54,9 @@ function App() {
                 key={route.path}
                 path={route.path}
                 element={
-                  (
-                    <Suspense fallback={null}>
-                      <Layout>
-                        <ProtectedRoute component={route.component} />
-                      </Layout>
-                    </Suspense>
-                  )
+                  <Layout>
+                    <ProtectedRoute component={route.component} />
+                  </Layout>
                 }
               />
             );

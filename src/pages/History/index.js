@@ -46,7 +46,7 @@ const History = () => {
             <div
               className={cx("icon_closed", "position-absolute")}
               onClick={() => {
-                navigate("/home");
+                navigate("/game");
               }}
             >
               <DeleteCircle />

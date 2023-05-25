@@ -33,9 +33,11 @@ const Game = () => {
     setStt(item.stt);
   };
   const questionPlayed = async (sttQuestion) => {
+    setLoading(true);
     try {
       const response = await UserApi.update({ stt: sttQuestion });
       if (response?.data?.status === 200) {
+        setLoading(false);
         return true;
       } else {
         GetMessageValidate("Có lỗi xảy ra trên hệ thống!");
@@ -43,6 +45,7 @@ const Game = () => {
     } catch (e) {
       GetMessageValidate("Có lỗi xảy ra trên hệ thống!");
     }
+    setLoading(false);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -111,12 +114,14 @@ const Game = () => {
         </div>
         <div
           className={cx(
-            `${!activeGame ? "background1" : "background1-closed"}`
+            `${!activeGame ? "background1-open" : "background1-closed"}`,
+            "background1"
           )}
         ></div>
         <div
           className={cx(
-            `${!activeGame ? "background2" : "background2-closed"}`
+            `${!activeGame ? "background2-open" : "background2-closed"}`,
+            "background2"
           )}
         ></div>
         <div
@@ -131,13 +136,16 @@ const Game = () => {
               <div className={cx("title")}>
                 TRƯỢT SANG PHẢI HOẶC TRÁI ĐỂ XEM CÁC CÂU HỎI
               </div>
-              <div
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveGame(true);
-                }}
-              >
-                <Button className={"button_submit mt-5"}>Let's go</Button>
+              <div>
+                <Button
+                  className={"button_submit mt-5"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveGame(true);
+                  }}
+                >
+                  Let's go
+                </Button>
               </div>
             </>
           ) : (
