@@ -85,6 +85,7 @@ const Game = () => {
     await questionPlayed(0);
     const reversedArray = [...authState?.user?.infoQuestion].reverse();
     setListQuestion(reversedArray)
+    setActiveLastHeart(false)
     // await loadUser();
     // window.location.reload();
     setLoading(false);
@@ -106,6 +107,7 @@ const Game = () => {
       getMessageSuccess("Lưu câu hỏi thành công!");
     }
   };
+
   return (
     <>
       {loading && <Loader />}
@@ -154,36 +156,40 @@ const Game = () => {
             <>
               <div className={cx("list_card")} style={{ zIndex: 100 }}>
                 {listQuestion.map((item, index) => {
-                  return (
-                    <TinderCard
-                      className={cx("swipe")}
-                      onSwipe={(dir) => {
-                        onSwipe(dir, item);
-                      }}
-                      onCardLeftScreen={() => {}}
-                      preventSwipe={["up", "down"]}
-                      key={item.stt}
-                    >
-                      <div
-                        style={{
-                          width: "327px",
-                          height: "472px",
-                          // backgroundColor: "black",
-                          backgroundImage: `url(${generateImg(index)})`,
-                          backgroundPosition: "center",
-                          backgroundSize: "cover",
-                          backgroundRepeat: "no-repeat",
-                          position: "relative",
-                          borderRadius: "48px",
+                  if (stt + 3 > item.stt) {
+                    console.log(item)
+                    return (
+                      <TinderCard
+                        className={cx("swipe")}
+                        onSwipe={(dir) => {
+                          onSwipe(dir, item);
                         }}
+                        onCardLeftScreen={() => { }}
+                        preventSwipe={["up", "down"]}
+                        key={item.stt}
                       >
-                        <div className={cx("header_card")}>
-                          ĐIỀU MÌNH CHƯA NÓI
+                        <div
+                          style={{
+                            width: "327px",
+                            height: "472px",
+                            // backgroundColor: "black",
+                            backgroundImage: `url(${generateImg(index)})`,
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                            position: "relative",
+                            borderRadius: "48px",
+                          }}
+                        >
+                          <div className={cx("header_card")}>
+                            ĐIỀU MÌNH CHƯA NÓI
+                          </div>
+                          <div className={cx("content_card")}>{item.name}</div>
                         </div>
-                        <div className={cx("content_card")}>{item.name}</div>
-                      </div>
-                    </TinderCard>
-                  );
+                      </TinderCard>
+                    );
+                  }
+                  return null
                 })}
 
                 {activeLastHeart && <div className={cx("last_heart")}></div>}
@@ -197,29 +203,26 @@ const Game = () => {
             onClick={() => {
               setActiveIcon(!activeIcon);
             }}
-            className={`${
-              activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
-            }`}
+            className={`${activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
+              }`}
           >
             <CircleAddIcon />
           </div>
           <div className="d-flex">
             <div
-              className={`${
-                activeIcon
-                  ? cx("active-circle-reload", "ms-4")
-                  : cx("nonactive-circle-reload", "ms-4")
-              }`}
+              className={`${activeIcon
+                ? cx("active-circle-reload", "ms-4")
+                : cx("nonactive-circle-reload", "ms-4")
+                }`}
               onClick={handleReloadQuestion}
             >
               <CircleReloadIcon />
             </div>
             <div
-              className={`${
-                activeIcon
-                  ? cx("active-circle-home", "ms-4")
-                  : cx("nonactive-circle-home", "ms-4")
-              }`}
+              className={`${activeIcon
+                ? cx("active-circle-home", "ms-4")
+                : cx("nonactive-circle-home", "ms-4")
+                }`}
               onClick={() => {
                 navigate("/home");
               }}
@@ -227,11 +230,10 @@ const Game = () => {
               <CircleHomeIcon />
             </div>
             <div
-              className={`${
-                activeIcon
-                  ? cx("active-circle-menu", "ms-4")
-                  : cx("nonactive-circle-menu", "ms-4")
-              }`}
+              className={`${activeIcon
+                ? cx("active-circle-menu", "ms-4")
+                : cx("nonactive-circle-menu", "ms-4")
+                }`}
               onClick={() => {
                 navigate("/history");
               }}
@@ -239,11 +241,10 @@ const Game = () => {
               <CircleMenuIcon />
             </div>
             <div
-              className={`${
-                activeIcon
-                  ? cx("active-circle-save", "ms-4")
-                  : cx("nonactive-circle-save", "ms-4")
-              }`}
+              className={`${activeIcon
+                ? cx("active-circle-save", "ms-4")
+                : cx("nonactive-circle-save", "ms-4")
+                }`}
               onClick={handleSaveIcon}
             >
               <CircleReloadIcon />
