@@ -157,7 +157,6 @@ const Game = () => {
               <div className={cx("list_card")} style={{ zIndex: 100 }}>
                 {listQuestion.map((item, index) => {
                   if (stt + 3 > item.stt) {
-                    console.log(item)
                     return (
                       <TinderCard
                         className={cx("swipe")}
