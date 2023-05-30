@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactCardFlip from "react-card-flip";
 
 const BigCard = (props) => {
-  const { img_front, img_back } = props;
-  const [isFlipped,setIsFlipped] = useState(false)
-  const  handleClick= (e) => {
-    setIsFlipped(!isFlipped)
-  }
+  const { img_front, img_back, handleCardClick, isFlipped, id } = props;
+  // const [isFlipped, setIsFlipped] = useState(false);
+  const handleClick = (e) => {
+    // setIsFlipped(!isFlipped);
+    handleCardClick(id);
+  };
   return (
     <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
       <div
@@ -28,7 +29,6 @@ const BigCard = (props) => {
           backgroundSize: "cover",
         }}
         onClick={handleClick}
-
       ></div>
     </ReactCardFlip>
   );

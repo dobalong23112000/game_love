@@ -48,6 +48,23 @@ const Home = () => {
     setIsOpenModal(true);
     setActiveSmallCard(item);
   };
+  const [isFlipped, setIsFlipped] = useState([]);
+  const handleCardClick = (cardIndex) => {
+    setIsFlipped((prevIsFlipped) => {
+      const newIsFlipped = [...prevIsFlipped];
+
+      // If the clicked card is already flipped, close it
+      if (newIsFlipped[cardIndex]) {
+        newIsFlipped[cardIndex] = false;
+      } else {
+        // Close all other cards and open the clicked card
+        newIsFlipped.fill(false);
+        newIsFlipped[cardIndex] = true;
+      }
+
+      return newIsFlipped;
+    });
+  };
   return (
     <div className={cx("wrapper")}>
       <div onClick={handleClickOutside} style={{ paddingBottom: "80px" }}>
@@ -70,7 +87,7 @@ const Home = () => {
               slidesPerView={2.5}
               speed={500}
               onSlideChange={() => {}}
-              style={{ paddingLeft: "60px" }}
+              style={{ paddingLeft: "60px",paddingBottom:"8px" }}
             >
               {listSmallCard.map((item, index) => {
                 return (
@@ -99,7 +116,6 @@ const Home = () => {
               slidesPerView={1.5}
               onSlideChange={() => {}}
               speed={500}
-              // onSwiper={(swiper) => {}}
               style={{ paddingLeft: "45px" }}
             >
               {listBigCard.map((item, index) => {
@@ -108,6 +124,9 @@ const Home = () => {
                     <BigCard
                       img_front={item.img_front}
                       img_back={item.img_back}
+                      isFlipped={isFlipped[index]}
+                      handleCardClick={handleCardClick}
+                      id={index}
                     />
                   </SwiperSlide>
                 );

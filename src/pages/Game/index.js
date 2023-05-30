@@ -87,7 +87,7 @@ const Game = () => {
     setListQuestion(reversedArray)
     setActiveLastHeart(false)
     // await loadUser();
-    // window.location.reload();
+    window.location.reload();
     setLoading(false);
   };
   useEffect(() => {

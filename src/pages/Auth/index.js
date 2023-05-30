@@ -55,6 +55,7 @@ const Auth = () => {
       const response = await loginUser({
         email,
         passWord: password,
+        typeCard: 1,
       });
       if (response?.status === 200) {
         navigation("/home");
@@ -444,9 +445,9 @@ const Auth = () => {
                   onClick={togglePasswordRegister}
                 >
                   {passwordRegisterShown ? (
-                    <AiOutlineEyeInvisible size={12} color="white"/>
+                    <AiOutlineEyeInvisible size={12} color="white" />
                   ) : (
-                    <AiOutlineEye size={12} color="white"/>
+                    <AiOutlineEye size={12} color="white" />
                   )}
                 </div>
               </FormGroup>
@@ -488,9 +489,9 @@ const Auth = () => {
                   onClick={togglePasswordRegister}
                 >
                   {passwordRegisterShown ? (
-                    <AiOutlineEyeInvisible size={12} color="white"/>
+                    <AiOutlineEyeInvisible size={12} color="white" />
                   ) : (
-                    <AiOutlineEye size={12} color="white"/>
+                    <AiOutlineEye size={12} color="white" />
                   )}
                 </div>
               </FormGroup>
