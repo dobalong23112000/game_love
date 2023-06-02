@@ -83,11 +83,11 @@ const Game = () => {
   const handleReloadQuestion = async () => {
     setLoading(true);
     await questionPlayed(0);
+    setActiveGame(false);
     const reversedArray = [...authState?.user?.infoQuestion].reverse();
-    setListQuestion(reversedArray)
-    setActiveLastHeart(false)
+    setListQuestion(reversedArray);
+    setActiveLastHeart(false);
     // await loadUser();
-    window.location.reload();
     setLoading(false);
   };
   useEffect(() => {
@@ -163,7 +163,7 @@ const Game = () => {
                         onSwipe={(dir) => {
                           onSwipe(dir, item);
                         }}
-                        onCardLeftScreen={() => { }}
+                        onCardLeftScreen={() => {}}
                         preventSwipe={["up", "down"]}
                         key={item.stt}
                       >
@@ -188,7 +188,7 @@ const Game = () => {
                       </TinderCard>
                     );
                   }
-                  return null
+                  return null;
                 })}
 
                 {activeLastHeart && <div className={cx("last_heart")}></div>}
@@ -202,26 +202,29 @@ const Game = () => {
             onClick={() => {
               setActiveIcon(!activeIcon);
             }}
-            className={`${activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
-              }`}
+            className={`${
+              activeIcon ? cx("active-circle-add") : cx("nonactive-circle-add")
+            }`}
           >
             <CircleAddIcon />
           </div>
           <div className="d-flex">
             <div
-              className={`${activeIcon
-                ? cx("active-circle-reload", "ms-4")
-                : cx("nonactive-circle-reload", "ms-4")
-                }`}
+              className={`${
+                activeIcon
+                  ? cx("active-circle-reload", "ms-4")
+                  : cx("nonactive-circle-reload", "ms-4")
+              }`}
               onClick={handleReloadQuestion}
             >
               <CircleReloadIcon />
             </div>
             <div
-              className={`${activeIcon
-                ? cx("active-circle-home", "ms-4")
-                : cx("nonactive-circle-home", "ms-4")
-                }`}
+              className={`${
+                activeIcon
+                  ? cx("active-circle-home", "ms-4")
+                  : cx("nonactive-circle-home", "ms-4")
+              }`}
               onClick={() => {
                 navigate("/home");
               }}
@@ -229,10 +232,11 @@ const Game = () => {
               <CircleHomeIcon />
             </div>
             <div
-              className={`${activeIcon
-                ? cx("active-circle-menu", "ms-4")
-                : cx("nonactive-circle-menu", "ms-4")
-                }`}
+              className={`${
+                activeIcon
+                  ? cx("active-circle-menu", "ms-4")
+                  : cx("nonactive-circle-menu", "ms-4")
+              }`}
               onClick={() => {
                 navigate("/history");
               }}
@@ -240,10 +244,11 @@ const Game = () => {
               <CircleMenuIcon />
             </div>
             <div
-              className={`${activeIcon
-                ? cx("active-circle-save", "ms-4")
-                : cx("nonactive-circle-save", "ms-4")
-                }`}
+              className={`${
+                activeIcon
+                  ? cx("active-circle-save", "ms-4")
+                  : cx("nonactive-circle-save", "ms-4")
+              }`}
               onClick={handleSaveIcon}
             >
               <CircleReloadIcon />

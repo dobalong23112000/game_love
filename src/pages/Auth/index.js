@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AiOutlineMail,
   AiFillPhone,
@@ -17,12 +17,13 @@ import { AuthContext } from "contexts/AuthContext";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Loader from "components/Loading/Loader/Loader";
 import GetMessageValidate from "helpers/GetMessageValidate";
+import NotAuthApi from "api/NotAuthApi";
 const cx = classNames.bind(styles);
 const Auth = () => {
   const { uuid } = useParams();
   const { loginUser, authState } = useContext(AuthContext);
   const [passwordShown, setPasswordShown] = useState(false);
-
+  const navigate = useNavigate()
   // Password toggle handler
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -170,19 +171,30 @@ const Auth = () => {
     }
     setLoading(false);
   };
-
-  if (authState.isAuthenticated) {
-    const lastPath = sessionStorage.getItem("lastPath");
-    if (lastPath) {
-      return <Navigate to={`${lastPath}`} replace={true} />;
+  const checkUser = async () => {
+    try {
+      const response = await NotAuthApi.checkUser(uuid);
+      if (response?.data?.status === 200) {
+      
+      } else {
+        navigate('/')
+      }
+    } catch (e) {
+      navigate('/')
     }
+  };
+  useEffect(() => {
+    checkUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (authState.isAuthenticated) {
     return <Navigate to="/home" replace={true} />;
   }
 
+  const loadingPage = authState.authLoading || loading;
   return (
     <>
-      {authState.authLoading && <Loader />}
-      {loading && <Loader />}
+      {loadingPage && <Loader />}
       <div
         className={`${cx("wrapper")} ${
           isLogin ? "login_background" : "register_background"

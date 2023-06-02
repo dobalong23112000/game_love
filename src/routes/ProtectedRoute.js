@@ -1,16 +1,14 @@
-
-import { AuthContext } from 'contexts/AuthContext';
-import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { AuthContext } from "contexts/AuthContext";
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ component }) => {
-    const { authState } = useContext(AuthContext);
-    sessionStorage.setItem('lastPath', window.location.pathname);
-    const Page = component;
-    if (!authState.isAuthenticated) {
-        return <Navigate to="/" replace />;
-    }
-    return <Page />
+  const { authState } = useContext(AuthContext);
 
+  const Page = component;
+  if (!authState.isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+  return <Page />;
 };
-export default ProtectedRoute
+export default ProtectedRoute;
